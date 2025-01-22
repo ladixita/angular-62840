@@ -1,0 +1,23 @@
+<!--contenedor-->
+<mat-drawer-container class="example-container" autosize>
+  <!--menu lateral-->
+  <mat-drawer [opened]="true" #drawer class="example-sidenav" mode="side">
+    <mat-nav-list>
+      <a mat-list-item href="..." >Inicio</a>
+      <a mat-list-item href="..." >Alumno</a>
+      <a mat-list-item href="..." >Curso</a>
+      <a mat-list-item href="..." >Clase</a>
+    </mat-nav-list>
+  </mat-drawer>
+  <!--fin menu lateral-->
+
+  <!--area contenido-->
+  <div class="example-sidenav-content">
+    <app-toolbar (toggleSidenav)="drawer.toggle()"/>
+    <main style="padding: 1rem">
+      <app-students />
+    </main>
+  </div>
+  <!--fin area contenido-->
+
+</mat-drawer-container>
