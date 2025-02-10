@@ -1,25 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Alumno } from '../../../../interfaces/Alumno.Interface';
 import { StudentDialogComponent } from './components/student-dialog/student-dialog.component';
 import { generateRandomId } from '../../../../shared/utils';
-
-const ELEMENT_DATA: Alumno[] = [
-  {
-    codigo: 'dbv3Da',
-    nombre: 'Leidy',
-    Apellido: 'Uribe Marcos',
-    edad: 32,
-    estaAprobado: false
-  },
-  {
-    codigo: 'Abe3aD',
-    nombre: 'Leonardo',
-    Apellido: 'Tenorio Marcos',
-    edad: 28,
-    estaAprobado: true
-  }
-];
+import { StudentsService } from '../../../../core/services/students.service';
+import { Observable } from 'rxjs';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-students',
@@ -28,43 +14,87 @@ const ELEMENT_DATA: Alumno[] = [
   templateUrl: './students.component.html',
   styleUrl: './students.component.scss'
 })
-export class StudentsComponent {
+export class StudentsComponent implements OnInit{
   nombreAlumno = '';
   alumno: Alumno | null = null;
-  displayedColumns: string[] = ['codigo', 'nombre', 'apellido', 'edad', 'aprobado', 'acciones'];
-  dataSource = ELEMENT_DATA;
+  dataSource: Alumno[] = [];
+  isLoading = false;
+  isAdmin$: Observable<boolean>;
 
-  constructor(private matDialog: MatDialog) {
-
+  constructor(
+    private matDialog: MatDialog,
+    private _studentsService: StudentsService,
+    private authService: AuthService
+    ) {
+      this.isAdmin$ = this.authService.isAdmin$;
   }
 
-  openDialog() {
-    this.matDialog.open(StudentDialogComponent).afterClosed().subscribe({
-      next: (value) => {
-        console.log('Recibimos el valor: ', value);
-        if(value) {
-          this.alumno = value;
-          value[0] = generateRandomId(3);
-          this.dataSource = [...this.dataSource, value];
+  handleStudentsUpdate(data: Alumno[]): void {
+    this.dataSource = [...data];
+  }
+
+  ngOnInit(): void {
+    this.isLoading = true;
+    this._studentsService.getStudents().subscribe({
+      next: (data) => {
+        this.handleStudentsUpdate(data);
+      },
+      error: () => {
+        this.isLoading = false;
+      },
+      complete: () => {
+        this.isLoading = false;
+      },
+    });
+  }
+
+  openDialog(editingStudent?: Alumno): void {
+    this.matDialog.open(StudentDialogComponent, { data: { editingStudent }, autoFocus: true}).afterClosed().subscribe({
+      next: (data) => {
+        if(!!data) {
+          if(!!editingStudent) {
+            this.editAlumno(editingStudent.codigo, data);
+          } else {
+            this.addStudent(data);
+          }
         }
       }
     });
   }
 
-  editAlumno(alumnoEdit: Alumno) {
+  editAlumno(codigo: string, data: {nombre: string, Apellido: string, edad: number,  estaAprobado: boolean }) {
+    this.isLoading = true;
     //enviando alumno
-    this.matDialog.open(StudentDialogComponent, {data: alumnoEdit}).afterClosed().subscribe(({
-      next: (value) => {
-        if(!!value) {
-          this.dataSource = this.dataSource.map((el) => el.codigo === alumnoEdit.codigo ? {...value, codigo: alumnoEdit.codigo} : el)
-        }
-      }
-    }));
+    this._studentsService.updateStudentById(codigo, data).subscribe({
+      next: (data) => this.handleStudentsUpdate(data),
+      error: (err) => (this.isLoading = false),
+      complete: () => (this.isLoading = false),
+    });
+  }
+
+  addStudent(data: {nombre: string, Apellido: string, edad: number,  estaAprobado: boolean }): void {
+    this.isLoading = true;
+    this._studentsService.addStudent(data).subscribe({
+      next: (data) => this.handleStudentsUpdate(data),
+      error: (err) => (this.isLoading = false),
+      complete: () => (this.isLoading = false),
+    });
   }
 
   deleteAlumnoById(cod: string) {
     if(confirm('Esta seguro de eliminar un alumno?')) {
-      this.dataSource = this.dataSource.filter((el) => el.codigo != cod);
+      this.isLoading = true;
+      this._studentsService.deleteStudentById(cod).subscribe({
+        next: (data) => {
+          this.handleStudentsUpdate(data);
+        },
+        error: (err) => {
+          this.isLoading = false;
+        },
+        complete: () => {
+          this.isLoading = false;
+        },
+      });
     }
   }
 

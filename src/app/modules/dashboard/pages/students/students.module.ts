@@ -13,6 +13,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { StudentDialogComponent } from './components/student-dialog/student-dialog.component';
 import { SharedModule } from '../../../../shared/shared.module';
+import { StudentDetailComponent } from './pages/student-detail/student-detail.component';
+import { StudentsTableComponent } from './components/students-table/students-table.component';
 
 const materialModules = [
   MatIconModule,
@@ -29,7 +31,9 @@ const materialModules = [
 @NgModule({
   declarations: [
     StudentsComponent,
-    StudentDialogComponent
+    StudentDialogComponent,
+    StudentDetailComponent,
+    StudentsTableComponent
   ],
   imports: [
     CommonModule,

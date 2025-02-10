@@ -11,6 +11,8 @@ import {MatIconModule} from '@angular/material/icon';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import {MatListModule} from '@angular/material/list';
 import { StudentsModule } from './pages/students/students.module';
+import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
+import { SharedModule } from '../../shared/shared.module';
 
 const materialModules = [
   MatSidenavModule,
@@ -27,13 +29,15 @@ const modules = [
 @NgModule({
   declarations: [
     DashboardComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    NavMenuComponent
   ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
     ...[materialModules],
-    ...[modules]
+    ...[modules],
+    SharedModule
   ],
   exports: [
     DashboardComponent

@@ -14,7 +14,7 @@ import { generateRandomId } from '../../../../../../shared/utils';
 export class StudentDialogComponent {
   alumnoForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private matDialogRef: MatDialogRef<StudentDialogComponent>, @Inject(MAT_DIALOG_DATA) public editingAlumno?: Alumno) {
+  constructor(private fb: FormBuilder, private matDialogRef: MatDialogRef<StudentDialogComponent>, @Inject(MAT_DIALOG_DATA) public data?: { editingStudent: Alumno }) {
     this.alumnoForm = this.fb.group({
       nombre: ['', [Validators.required]],
       Apellido: ['', [Validators.required]],
@@ -22,18 +22,21 @@ export class StudentDialogComponent {
       estaAprobado: [true, [Validators.required]]
     });
 
-    if(this.editingAlumno) {
-      this.alumnoForm.patchValue(this.editingAlumno);
+    if(this.data?.editingStudent) {
+      console.log('edit student', this.data.editingStudent);
+      this.alumnoForm.patchValue(this.data.editingStudent);
     }
   }
 
   onSave(): void {
     console.log(this.alumnoForm.value);
     if(this.alumnoForm.valid) {
-      this.matDialogRef.close({
-        ...this.alumnoForm.value,
-        codigo: this.editingAlumno != null ? this.editingAlumno.codigo : generateRandomId(6),
-      });
+      this.matDialogRef.close(this.alumnoForm.value)
+      // this.matDialogRef.close({
+      //   // ...this.alumnoForm.value,
+      //   // codigo: this.editingAlumno != null ? this.editingAlumno.codigo : generateRandomId(6),
+
+      // });
     } else {
       this.alumnoForm.markAllAsTouched();
       alert('Formulario invalido');

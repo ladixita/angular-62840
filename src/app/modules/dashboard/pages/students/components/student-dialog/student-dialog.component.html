@@ -1,6 +1,6 @@
 <h2 mat-dialog-title class="text-xl font-bold">
   {{
-    editingAlumno ? "Editando alumno " + editingAlumno.nombre : "Añadir alumno"
+    data?.editingStudent ? "Editando alumno " + data?.editingStudent?.nombre : "Añadir alumno"
   }}
 </h2>
 <mat-dialog-content class="space-y-4">
