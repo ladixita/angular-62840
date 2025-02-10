@@ -11,6 +11,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 
 const materialModules = [
   MatListModule,
@@ -18,7 +23,12 @@ const materialModules = [
   MatFormFieldModule,
   MatInputModule,
   ReactiveFormsModule,
-  MatCardModule
+  MatCardModule,
+  MatIconModule,
+  MatTableModule,
+  MatButtonModule,
+  MatDialogModule,
+  MatSelectModule
 ];
 
 @NgModule({

@@ -1,5 +1,5 @@
 export interface Curso {
-    id: number;
+    id: string;
     nombreCurso: string;
     activo: boolean;
 }

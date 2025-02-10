@@ -15,8 +15,6 @@ import { AuthService } from '../../../../core/services/auth.service';
   styleUrl: './students.component.scss'
 })
 export class StudentsComponent implements OnInit{
-  nombreAlumno = '';
-  alumno: Alumno | null = null;
   dataSource: Alumno[] = [];
   isLoading = false;
   isAdmin$: Observable<boolean>;

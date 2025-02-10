@@ -1,0 +1,48 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- id Column -->
+  <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> # </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>
+
+  <!-- Nombre Column -->
+  <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef> Nombre del curso </th>
+      <td mat-cell *matCellDef="let element"> {{element.nombreCurso}} </td>
+  </ng-container>
+
+  <!-- Activo Column -->
+  <ng-container matColumnDef="activo">
+    <th mat-header-cell *matHeaderCellDef> Activo </th>
+    <td mat-cell *matCellDef="let element" [appEstadoAlumno]="element.activo"> {{element.activo ? 'Si' : 'No'}} </td>
+    <!-- <td mat-cell *matCellDef="let element"> {{ element.estaAprobado ? 'Si' : 'No' }} - <mat-icon>{{ element.estaAprobado | aprobado }}</mat-icon></td> -->
+</ng-container>
+
+  <!-- Acciones Column -->
+  <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let element">
+        <button [routerLink]="element.id"
+          [queryParams]="{
+            nombreCurso: element.nombreCurso,
+          }"
+          mat-icon-button>
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button *ngIf="isAdmin$ | async" (click)="edit.emit(element)" mat-icon-button>
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button *ngIf="isAdmin$ | async" (click)="delete.emit(element.id)" mat-icon-button>
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+  </ng-container>
+
+  <!--define las columnas a mostrar-->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

@@ -1,0 +1,18 @@
+@if (isLoading) {
+  <mat-spinner />
+  } @else {
+
+  <button
+    [disabled]="!(isAdmin$ | async)"
+    (click)="openDialog()"
+    mat-flat-button
+  >
+    <mat-icon>add</mat-icon> Añadir curso
+  </button>
+
+  <app-course-table
+    [dataSource]="dataSource"
+    (delete)="deleteCourseById($event)"
+    (edit)="openDialog($event)"
+  />
+  }
