@@ -1,23 +1,64 @@
 <div class="min-h-screen flex items-center justify-center bg-gray-100 py-10">
-  <div class="w-full max-w-lg bg-white shadow-lg rounded-xl p-8">
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">Detalle del curso</h2>
-    <div class="space-y-4">
-      <div>
-        <p class="text-sm font-medium text-gray-500">Nombre del curso:</p>
-        <p class="text-lg font-semibold text-gray-800">{{ courseName }}</p>
+  <div class="w-full max-w-3xl bg-white shadow-lg rounded-xl p-8">
+    <!-- Loader -->
+    @if (isLoading) {
+      <div class="flex justify-center">
+        <mat-spinner diameter="50"></mat-spinner>
       </div>
-      <div>
-        <p class="text-sm font-medium text-gray-500">Código del curso:</p>
-        <p class="text-lg text-gray-800">{{ courseId }}</p>
-      </div>
-    </div>
-    <div class="mt-6">
-      <button
-        routerLink="../"
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
-      >
-        Volver al listado de cursos
-      </button>
-    </div>
+    } @else {
+      <!-- Manejo de errores -->
+      @if (errorMessage) {
+        <p class="text-center text-red-600 text-lg">{{ errorMessage }}</p>
+      } @else {
+        <!-- Detalle del curso -->
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Detalle del curso</h2>
+
+        <div class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <p class="text-sm font-medium text-gray-500">Nombre del curso:</p>
+              <p class="text-lg font-semibold text-gray-800">{{ course?.nombreCurso }}</p>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-500">Código del curso:</p>
+              <p class="text-lg font-semibold text-gray-800">{{ course?.id }}</p>
+            </div>
+          </div>
+
+          <!-- Profesores/Estudiantes -->
+          <div>
+            <h4 class="text-xl font-semibold text-gray-800 mb-2">Estudiantes inscritos:</h4>
+            @if (course?.students != null) {
+              <mat-list class="bg-gray-50 rounded-lg shadow-sm">
+                @for (student of course?.students; track $index) {
+                  <mat-list-item>
+                    <div class="w-full flex justify-between items-center">
+                      <span>{{ student.nombre }} {{ student.Apellido }}</span>
+                      <mat-icon
+                        class="text-blue-600"
+                        >school</mat-icon
+                      >
+                    </div>
+                  </mat-list-item>
+                  <mat-divider></mat-divider>
+                }
+              </mat-list>
+            } @else {
+              <p class="text-gray-500 text-sm">No hay estudiantes registrados en este curso.</p>
+            }
+          </div>
+        </div>
+
+        <!-- Botón para volver -->
+        <div class="mt-8">
+          <button
+            routerLink="../"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
+          >
+            Volver al listado de cursos
+          </button>
+        </div>
+      }
+    }
   </div>
 </div>

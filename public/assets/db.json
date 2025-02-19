@@ -1,0 +1,48 @@
+{
+  "users": [
+    {
+      "id": "vnD3s",
+      "email": "admin@email.com",
+      "password": "123456",
+      "name": "Administrador",
+      "accessToken": "djMDFJNdfmvcJKDFdsmd23GFuedsvFGD2d32",
+      "role": "ADMIN"
+    },
+    {
+      "id": "avs3D",
+      "email": "employee@email.com",
+      "password": "123456",
+      "name": "Empleado",
+      "accessToken": "djMDFJNd3gngh61DFd56hhgfddd23GFue232",
+      "role": "EMPLOYEE"
+    }
+  ],
+  "courses": [
+    {
+      "id": "svDFs3",
+      "nombreCurso": "Adobe Illustrator",
+      "activo": true
+    },
+    {
+      "nombreCurso": "Blender 3D",
+      "id": "svDFj3",
+      "activo": true
+    },
+    {
+      "id": "d71d",
+      "nombreCurso": "Angular",
+      "activo": true
+    }
+  ],
+  "students": [
+    {
+      "id": "sdjv4",
+      "codigo": "1243",
+      "nombre": "Juan",
+      "Apellido": "Perez",
+      "edad": 25,
+      "estaAprobado": true,
+      "courseId": "svDFs3"
+    }
+  ]
+}
