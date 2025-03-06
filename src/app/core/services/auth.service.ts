@@ -4,6 +4,7 @@ import { generateRandomId } from '../../shared/utils';
 import { Router } from '@angular/router';
 import { User } from '../../interfaces/User.interface';
 import { LoginPayload } from '../../interfaces/LoginPayload.interface';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 const FAKE_USERS_DB: User[] = [
   {
@@ -29,7 +30,10 @@ export class AuthService {
   private _authUser$ = new BehaviorSubject<null | User>(null);
   authUser$ = this._authUser$.asObservable();
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private httpclient: HttpClient
+  ) {}
 
   get isAdmin$(): Observable<boolean> {
     return this.authUser$.pipe(map((x) => x?.role === 'ADMIN'));

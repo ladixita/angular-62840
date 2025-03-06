@@ -1,1 +1,26 @@
-<p>users works!</p>
+<div class="min-h-screen flex items-center justify-center bg-gray-100 py-10">
+  <div class="w-full max-w-4xl bg-white shadow-lg rounded-xl p-8">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Lista de Usuarios</h2>
+
+    <!-- Si no hay usuarios -->
+    <div *ngIf="(users$ | async)?.length === 0" class="text-center text-gray-500">
+      <p>No hay usuarios registrados.</p>
+    </div>
+
+    <!-- Lista de Usuarios -->
+    <div class="space-y-4">
+      <div *ngFor="let user of users$ | async" class="flex items-center justify-between bg-gray-50 p-4 rounded-lg shadow-sm">
+        <div>
+          <p class="text-lg font-semibold text-gray-800">{{ user.name }}</p>
+          <p class="text-sm text-gray-500">{{ user.email }}</p>
+        </div>
+        <button
+          (click)="deleteUserById(user.id)"
+          class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg flex items-center"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
